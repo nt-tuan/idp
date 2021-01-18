@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace dmc_auth.Controllers.Models
+namespace ThanhTuan.IDP.Controllers.Models
 {
   public class ErrorResponse
   {

@@ -1,43 +1,21 @@
 using System;
 using System.Collections.Generic;
-using dmc_auth.Entities;
+using ThanhTuan.IDP.Entities;
 
-namespace dmc_auth.Controllers.Models
+namespace ThanhTuan.IDP.Controllers.Models
 {
-  public class DepartmentResponse
+  public class PublicUserInfo
   {
-    public int Id { get; set; }
+    public string Username { get; set; }
+    public string Image { get; set; }
+    public string Nickname { get; set; }
     public string Fullname { get; set; }
-    public string Shortname { get; set; }
-    public string Code { get; set; }
-
-    public DepartmentResponse(Department entity)
+    public PublicUserInfo(ApplicationUser user)
     {
-      Id = entity.Id;
-      Fullname = entity.FullName;
-      Shortname = entity.ShortName;
-      Code = entity.Code;
-    }
-  }
-  public class EmployeeResponse
-  {
-    public int Id { get; set; }
-    public string Fullname { get; set; }
-    public string Code { get; set; }
-    public DateTime? Birthday { get; set; }
-    public int Gender { get; set; }
-    public DepartmentResponse Department { get; set; }
-    public EmployeeResponse(Employee entity)
-    {
-      Id = entity.Id;
-      Fullname = entity.FullName;
-      Code = entity.Code;
-      Birthday = entity.Birthday;
-      Gender = entity.Gender;
-      if (entity.Department != null)
-      {
-        Department = new DepartmentResponse(entity.Department);
-      }
+      Username = user.UserName;
+      Image = user.Image;
+      Nickname = user.Nickname;
+      Fullname = user.Fullname;
     }
   }
   public class UserResponse
@@ -52,8 +30,7 @@ namespace dmc_auth.Controllers.Models
     public IList<string> Roles { get; set; }
     public bool LockoutEnable { get; set; }
     public DateTimeOffset? LockoutEnd { get; set; }
-    public EmployeeResponse Employee { get; set; }
-    public UserResponse(ApplicationUser entity, IList<string> roles)
+    public UserResponse(ApplicationUser entity)
     {
       Id = entity.Id;
       Username = entity.UserName;
@@ -64,8 +41,9 @@ namespace dmc_auth.Controllers.Models
       Nickname = entity.Nickname;
       Image = entity.Image;
       Phone = entity.PhoneNumber;
-      if (entity.Employee != null)
-        Employee = new EmployeeResponse(entity.Employee);
+    }
+    public UserResponse(ApplicationUser entity, IList<string> roles) : this(entity)
+    {
       Roles = roles;
     }
   }

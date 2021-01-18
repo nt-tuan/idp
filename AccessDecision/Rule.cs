@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 
-namespace dmc_auth.AccessDecision
+namespace ThanhTuan.IDP.AccessDecision
 {
   public class Rule
   {
@@ -11,5 +12,10 @@ namespace dmc_auth.AccessDecision
     public string Role { get; set; }
     [JsonPropertyName("methods")]
     public List<string> Methods { get; set; }
+  }
+  public class ParsedRule
+  {
+    public Regex Pattern { get; set; }
+    public string Scope { get; set; }
   }
 }

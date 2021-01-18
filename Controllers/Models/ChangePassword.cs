@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using dmc_auth.Entities;
+using ThanhTuan.IDP.Entities;
 
-namespace dmc_auth.Controllers.Models
+namespace ThanhTuan.IDP.Controllers.Models
 {
   public class ChangePasswordModel
   {

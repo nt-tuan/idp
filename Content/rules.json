@@ -1,11 +1,35 @@
 [
-    {
-        "path":"id-api.my-shell.com/api/admin/.*",
-        "role": "user.read",
-        "methods": ["GET"]
-    },
-    {
-        "path":"[^\/]*/allowUserWrite",
-        "role": "user.write"
-    }
+  {
+    "path": "id-api\\.my-shell\\.com/api/admin/user",
+    "role": "user.read",
+    "methods": ["GET"]
+  },
+  {
+    "path": "id-api\\.my-shell\\.com/api/admin/user",
+    "role": "user.write",
+    "methods": ["POST", "DELETE", "PUT"]
+  },
+  {
+    "path": "id-api\\.my-shell\\.com/api/me",
+    "methods": ["GET", "POST", "DELETE", "PUT"]
+  },
+  {
+    "path": "cdn\\.my-shell\\.com/admin",
+    "role": "image.read",
+    "methods": ["GET"]
+  },
+  {
+    "path": "cdn\\.my-shell\\.com/admin",
+    "role": "image.write",
+    "methods": ["POST", "DELETE", "PUT"]
+  },
+  {
+    "path": "api\\.my-shell\\.com/me",
+    "methods": ["GET", "POST", "PUT", "DELETE"]
+  },
+  {
+    "path": "api\\.my-shell\\.com",
+    "methods": ["POST", "DELETE", "PUT"],
+    "role": "blogs.admin"
+  }
 ]

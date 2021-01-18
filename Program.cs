@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 using System.Net.Http;
 using System.Net;
 
-namespace dmc_auth
+namespace ThanhTuan.IDP
 {
   public class Program
   {

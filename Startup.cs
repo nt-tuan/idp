@@ -2,8 +2,8 @@ using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using dmc_auth.Data;
-using dmc_auth.Entities;
+using ThanhTuan.IDP.Data;
+using ThanhTuan.IDP.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Net.Http;
 using Microsoft.Extensions.Logging;
-using dmc_auth.Hydra;
+using ThanhTuan.IDP.Hydra;
 
-namespace dmc_auth
+namespace ThanhTuan.IDP
 {
   public class Startup
   {
@@ -33,8 +33,8 @@ namespace dmc_auth
       {
         options.AddPolicy(name: "all", builder =>
               {
-            builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
-          });
+                builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+              });
       });
       services.AddDbContext<ApplicationDbContext>(options =>
       {

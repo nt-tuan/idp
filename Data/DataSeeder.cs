@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using dmc_auth.Controllers.Models;
-using dmc_auth.Entities;
+using ThanhTuan.IDP.Controllers.Models;
+using ThanhTuan.IDP.Entities;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 
-namespace dmc_auth.Data
+namespace ThanhTuan.IDP.Data
 {
   public class DataSeeder
   {

@@ -1,9 +1,9 @@
 using System.Linq.Expressions;
 using System.Linq;
-using dmc_auth.Entities;
+using ThanhTuan.IDP.Entities;
 using System;
 
-namespace dmc_auth
+namespace ThanhTuan.IDP
 {
   public enum OrderDir { ASC = 1, DESC = -1 };
   public abstract class PagingQuery<T>

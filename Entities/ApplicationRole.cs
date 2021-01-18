@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Identity;
-namespace dmc_auth.Entities
+namespace ThanhTuan.IDP.Entities
 {
   public class ApplicationRole : IdentityRole
   {

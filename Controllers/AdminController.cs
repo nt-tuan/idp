@@ -2,12 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using dmc_auth;
-using dmc_auth.Controllers.Models;
-using dmc_auth.Entities;
+using ThanhTuan.IDP;
+using ThanhTuan.IDP.Controllers.Models;
+using ThanhTuan.IDP.Entities;
+using ThanhTuan.IDP.Hydra;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ThanhTuan.IDP.Hydra.Models;
+using ThanhTuan.IDP.Data;
 
 namespace CleanArchitecture.Web.Api
 {
@@ -18,11 +21,15 @@ namespace CleanArchitecture.Web.Api
     //private readonly ApplicationDbContext _context;    
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<ApplicationRole> _roleManager;
+    private readonly ApplicationDbContext _db;
+    private readonly IHydra _hydra;
 
-    public AdminController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
+    public AdminController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, IHydra hydra, ApplicationDbContext db)
     {
+      _db = db;
       _userManager = userManager;
       _roleManager = roleManager;
+      _hydra = hydra;
     }
 
     [HttpGet]
@@ -30,8 +37,6 @@ namespace CleanArchitecture.Web.Api
     public async Task<ActionResult<List<UserResponse>>> AccountList([FromQuery] UserPagingQuery model)
     {
       var query = _userManager.Users
-      .Include(u => u.Employee)
-      .ThenInclude(u => u.Department)
       .AsQueryable();
       var users = await model.BuildQuery(query).ToListAsync();
       var res = new List<UserResponse>();
@@ -73,7 +78,7 @@ namespace CleanArchitecture.Web.Api
     [Route("user/{id}")]
     public async Task<ActionResult<UserResponse>> Detail(string id)
     {
-      var user = await _userManager.Users.Include(u => u.Employee).ThenInclude(u => u.Department).FirstOrDefaultAsync(u => u.Id == id);
+      var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == id);
 
       if (user == null) return NotFound();
       var roles = await _userManager.GetRolesAsync(user);
@@ -94,7 +99,7 @@ namespace CleanArchitecture.Web.Api
       user.Fullname = model.Fullname;
       user.Nickname = model.Nickname;
       var result = await _userManager.UpdateAsync(user);
-      if (result.Succeeded) return new UserResponse(user, new List<string>());
+      if (result.Succeeded) return new UserResponse(user);
       return ResponseIdentityResultError(result);
     }
 
@@ -160,6 +165,32 @@ namespace CleanArchitecture.Web.Api
       var roles = await _roleManager.Roles.Where(e => roleNames.Contains(e.Name)).ToListAsync();
       return roles.Select(role => new RoleResponse(role)).ToList();
     }
+
+    [HttpGet("user/{id}/accessLogs")]
+    public async Task<ActionResult<List<SignInLog>>> GetAccessLogs(string id)
+    {
+      var user = await _userManager.FindByIdAsync(id);
+      if (user == null) return NotFound();
+      return await _db.GetAccessLogs(user.UserName);
+    }
+
+    [HttpGet("user/{id}/consentSessions")]
+    public async Task<ActionResult<List<ConsentSection>>> GetListConsentSession(string id)
+    {
+      var appUser = await _userManager.FindByIdAsync(id);
+      if (appUser == null) return NotFound();
+      return await _hydra.ListAllConsentSessions(appUser.UserName);
+    }
+
+    [HttpDelete("user/{id}/revokeConsentSession")]
+    public async Task<ActionResult> RevokeConsentSession(string id, string client, bool? all)
+    {
+      var appUser = await _userManager.FindByIdAsync(id);
+      if (appUser == null) return NotFound();
+      await _hydra.RevokeConsentSession(appUser.UserName, client, all);
+      return Ok();
+    }
+
 
     [HttpGet]
     [Route("roles")]

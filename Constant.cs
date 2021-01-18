@@ -1,5 +1,8 @@
 using System;
-namespace dmc_auth
+using System.Collections.Generic;
+using System.Linq;
+
+namespace ThanhTuan.IDP
 {
   public class Constant
   {
@@ -31,6 +34,11 @@ namespace dmc_auth
     public static string GetAuthURL()
     {
       return Environment.GetEnvironmentVariable("AUTH_URL");
+    }
+    public static List<string> GetScopes()
+    {
+      var scopes = Environment.GetEnvironmentVariable("DEFAULT_SCOPE");
+      return scopes.Split(",").Select(scope => scope.Trim()).ToList();
     }
     public static UInt64 GetRememberDuration()
     {

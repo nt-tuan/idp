@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace dmc_auth.Hydra.Models
+namespace ThanhTuan.IDP.Hydra.Models
 {
   public class AcceptLoginRequest
   {
@@ -15,19 +15,15 @@ namespace dmc_auth.Hydra.Models
     [JsonPropertyName("subject")]
     public string Subject { get; set; }
 
-    public AcceptLoginRequest(string userId)
+    public AcceptLoginRequest(string subject)
     {
-      Subject = userId;
-      ForceSubjectIdentifier = userId;
+      Subject = subject;
+      ForceSubjectIdentifier = subject;
       Acr = "user-password";
       Remember = true;
       RememberFor = (long)Constant.GetRememberDuration();
     }
   }
 
-  public class AcceptLoginResponse
-  {
-    [JsonPropertyName("redirect_to")]
-    public string RedirectTo { get; set; }
-  }
+
 }

@@ -1,8 +1,8 @@
 version: "3.4"
 
 services:
-  dmc_auth:
-    image: dmc_auth
+  idp:
+    image: idp
     build: .
     ports:
       - 5000:5000
@@ -11,21 +11,22 @@ services:
     volumes:
       - ./Content:/data
     environment:
-      ConnectionStrings__DatabaseURL: Host=db;Database=dmc_auth;Username=dmc_auth;Password=dmc_auth
+      ConnectionStrings__DatabaseURL: Host=db;Database=idp;Username=idp;Password=idp
       ASPNETCORE_URLS: http://0.0.0.0:5000
       AUTH_URL: http://host.docker.internal:4445
-      PUBLIC_AUTH_URL: https://auth-test.linhtinh.tech
-      CLIENT_ID: idp
+      PUBLIC_AUTH_URL: https://auth-test.my-shell.com
+      CLIENT_ID: 5f4f670c-0dfc-11eb-adc1-0242ac120002
       AUDIENCE: http://localhost:5000
       CLIENT_SECRET: AKNK2NNKH01N1OLNL1N6L109SBUX0C0BWJEBM0
       REMEMBER_DURATION: 2592000
       INIT_ROLES_FILEPATH: /data/roles.json
       INIT_USERS_FILEPATH: /data/users.json
       RULES_FILEPATH: /data/rules.json
+      DEFAULT_SCOPE: openid,profile,offline
   db:
     image: postgres:11.2-alpine
     ports:
       - 5432:5432
     environment:
-      POSTGRES_USER: dmc_auth
-      POSTGRES_PASSWORD: dmc_auth
+      POSTGRES_USER: idp
+      POSTGRES_PASSWORD: idp
